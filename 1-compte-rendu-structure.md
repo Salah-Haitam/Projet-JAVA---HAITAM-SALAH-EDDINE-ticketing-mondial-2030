@@ -1,6 +1,6 @@
 # 📋 Compte Rendu Structuré - Ticketing Mondial 2030
 
-#Réaliser par : HAITAM SALAH-EDDINE
+## Réaliser par : HAITAM SALAH-EDDINE
 ## 🎯 Présentation Générale
 
 | Élément | Détail |
