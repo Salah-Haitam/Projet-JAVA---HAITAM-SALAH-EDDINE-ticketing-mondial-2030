@@ -372,4 +372,3 @@ security.session.timeout=1800
 
 ---
 
-*Document généré le 11 janvier 2026*
