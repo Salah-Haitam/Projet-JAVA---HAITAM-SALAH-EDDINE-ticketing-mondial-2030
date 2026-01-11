@@ -12,7 +12,7 @@ Une application JavaFX complète pour la gestion des tickets de la Coupe du Mond
 - [Utilisation](#utilisation)
 - [Structure du projet](#structure-du-projet)
 - [Comptes de test](#comptes-de-test)
-- [Captures d'écran](#captures-décran)
+
 
 ## 📝 Description
 
@@ -202,20 +202,7 @@ ticketing-mondial-2030/
 - **Email** : `jean.dupont@email.com`
 - **Mot de passe** : `test1234`
 
-## 📸 Captures d'écran
 
-### Page de connexion
-Interface moderne avec switch connexion/inscription
-
-### Dashboard Administrateur
-- Statistiques en temps réel
-- Graphiques interactifs
-- Navigation latérale
-
-### Espace Spectateur
-- Liste des matchs disponibles
-- Achat de tickets
-- QR codes pour les tickets
 
 ## 🔧 Configuration
 
