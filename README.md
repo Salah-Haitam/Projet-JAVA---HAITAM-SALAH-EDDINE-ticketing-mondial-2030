@@ -4,7 +4,7 @@ Une application JavaFX complète pour la gestion des tickets de la Coupe du Mond
 
 ## 📋 Table des matières
 
-- [Description](#description)
+- [Description](#Description)
 - [Fonctionnalités](#fonctionnalités)
 - [Architecture](#architecture)
 - [Technologies](#technologies)
