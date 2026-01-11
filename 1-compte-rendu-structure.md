@@ -1,6 +1,25 @@
 # 📋 Compte Rendu Structuré - Ticketing Mondial 2030
 
 ## Réaliser par : HAITAM SALAH-EDDINE
+
+## 📑 Table des Matières
+
+- [Présentation Générale](#-présentation-générale)
+- [Architecture du Projet](#️-architecture-du-projet)
+- [Patterns de Conception Utilisés](#-patterns-de-conception-utilisés)
+- [Composants du Projet](#️-composants-du-projet)
+  - [Couche Entity](#-couche-entity-21-classes)
+  - [Couche DAO](#-couche-dao-14-interfaces--14-implémentations)
+  - [Couche Service](#-couche-service-6-services)
+  - [Couche Controller](#-couche-controller-4-contrôleurs)
+  - [Utilitaires](#-utilitaires-3-classes)
+- [Fonctionnalités](#-fonctionnalités)
+- [Diagramme de Classes Simplifié](#-diagramme-de-classes-simplifié)
+- [Flux de l'Application](#-flux-de-lapplication)
+- [Statistiques du Projet](#-statistiques-du-projet)
+
+---
+
 ## 🎯 Présentation Générale
 
 | Élément | Détail |
