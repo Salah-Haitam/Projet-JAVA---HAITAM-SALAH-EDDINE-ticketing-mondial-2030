@@ -13,7 +13,7 @@ Une application JavaFX complète pour la gestion des tickets de la Coupe du Mond
 - [Structure du projet](#structure-du-projet)
 - [Comptes de test](#comptes-de-test)
 
-
+---
 ## 📝 Description
 
 Cette plateforme permet la gestion complète des tickets pour la Coupe du Monde 2030, incluant :
