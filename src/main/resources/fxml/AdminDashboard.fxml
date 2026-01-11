@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!--
+    Dashboard Administrateur - Mondial 2030
+    Interface complète de gestion avec navigation latérale
+-->
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mondial2030.controller.AdminDashboardController"
+            styleClass="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" spacing="5" prefWidth="250">
+            
+            <!-- Logo -->
+            <VBox alignment="CENTER" styleClass="sidebar-header" spacing="5">
+                <Label text="⚽" styleClass="sidebar-logo"/>
+                <Label text="MONDIAL 2030" styleClass="sidebar-title"/>
+                <Label text="Administration" styleClass="sidebar-subtitle"/>
+            </VBox>
+            
+            <Separator/>
+            
+            <!-- Menu principal -->
+            <VBox styleClass="sidebar-menu" spacing="5" VBox.vgrow="ALWAYS">
+                <Button fx:id="btnDashboard" text="📊  Dashboard" 
+                        styleClass="sidebar-btn, active" onAction="#showDashboard"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnMatchs" text="⚽  Matchs" 
+                        styleClass="sidebar-btn" onAction="#showMatchs"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnUtilisateurs" text="👥  Utilisateurs" 
+                        styleClass="sidebar-btn" onAction="#showUtilisateurs"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnTickets" text="🎫  Tickets" 
+                        styleClass="sidebar-btn" onAction="#showTickets"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnAlertes" text="🔔  Alertes" 
+                        styleClass="sidebar-btn" onAction="#showAlertes"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnRapports" text="📈  Rapports" 
+                        styleClass="sidebar-btn" onAction="#showRapports"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnFlux" text="🚶  Flux spectateurs" 
+                        styleClass="sidebar-btn" onAction="#showFlux"
+                        maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            </VBox>
+            
+            <Separator/>
+            
+            <!-- Utilisateur et déconnexion -->
+            <VBox styleClass="sidebar-footer" spacing="10">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="👤" styleClass="user-icon"/>
+                    <VBox>
+                        <Label fx:id="lblUserName" text="Administrateur" styleClass="user-name"/>
+                        <Label fx:id="lblDate" text="" styleClass="user-date"/>
+                    </VBox>
+                </HBox>
+                <Button text="🚪  Déconnexion" styleClass="sidebar-btn, btn-logout"
+                        onAction="#handleDeconnexionAdmin" maxWidth="Infinity"/>
+            </VBox>
+            
+        </VBox>
+    </left>
+    
+    <!-- CONTENU PRINCIPAL -->
+    <center>
+        <StackPane fx:id="contentPane" styleClass="content-area">
+            
+            <!-- ===== DASHBOARD ===== -->
+            <VBox fx:id="dashboardPane" spacing="20" styleClass="content-pane">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <Label text="Tableau de bord" styleClass="page-title"/>
+                
+                <!-- Cartes statistiques -->
+                <HBox spacing="20">
+                    <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                        <Label text="Matchs" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalMatchs" text="0" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                        <Label text="Tickets vendus" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalTickets" text="0" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                        <Label text="Spectateurs" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalSpectateurs" text="0" styleClass="stat-value"/>
+                    </VBox>
+                    <VBox styleClass="stat-card, stat-card-alert" HBox.hgrow="ALWAYS">
+                        <Label text="Alertes actives" styleClass="stat-label"/>
+                        <Label fx:id="lblTotalAlertes" text="0" styleClass="stat-value"/>
+                    </VBox>
+                </HBox>
+                
+                <!-- Chiffre d'affaires -->
+                <VBox styleClass="stat-card-large">
+                    <Label text="Chiffre d'affaires total" styleClass="stat-label"/>
+                    <Label fx:id="lblChiffreAffaires" text="0,00 €" styleClass="stat-value-large"/>
+                </VBox>
+                
+                <!-- Graphiques -->
+                <HBox spacing="20" VBox.vgrow="ALWAYS">
+                    <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+                        <Label text="Répartition par catégorie" styleClass="chart-title"/>
+                        <PieChart fx:id="chartTicketsByCategory" legendSide="BOTTOM"/>
+                    </VBox>
+                    <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+                        <Label text="Top 5 - Tickets par match" styleClass="chart-title"/>
+                        <BarChart fx:id="chartTicketsByMatch">
+                            <xAxis><CategoryAxis label="Match"/></xAxis>
+                            <yAxis><NumberAxis label="Tickets"/></yAxis>
+                        </BarChart>
+                    </VBox>
+                </HBox>
+                
+            </VBox>
+            
+            <!-- ===== GESTION DES MATCHS ===== -->
+            <VBox fx:id="matchsPane" spacing="15" styleClass="content-pane" 
+                  visible="false" managed="false">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <Label text="Gestion des Matchs" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+                    <Button text="+ Nouveau match" styleClass="btn-primary" 
+                            onAction="#handleNouveauMatch"/>
+                </HBox>
+                
+                <!-- Filtres -->
+                <HBox spacing="15" styleClass="filter-bar">
+                    <TextField fx:id="txtSearchMatch" promptText="🔍 Rechercher..." 
+                               styleClass="search-field" prefWidth="250"
+                               onAction="#handleRechercherMatch"/>
+                    <ComboBox fx:id="cmbFilterPhase" promptText="Phase" prefWidth="150"/>
+                    <Button text="Rechercher" styleClass="btn-secondary" 
+                            onAction="#handleRechercherMatch"/>
+                </HBox>
+                
+                <!-- Tableau -->
+                <TableView fx:id="tableMatchs" VBox.vgrow="ALWAYS" styleClass="table-custom">
+                    <columns>
+                        <TableColumn fx:id="colMatchId" text="ID" prefWidth="60"/>
+                        <TableColumn fx:id="colMatchEquipes" text="Équipes" prefWidth="200"/>
+                        <TableColumn fx:id="colMatchDate" text="Date/Heure" prefWidth="150"/>
+                        <TableColumn fx:id="colMatchStade" text="Stade" prefWidth="150"/>
+                        <TableColumn fx:id="colMatchPhase" text="Phase" prefWidth="120"/>
+                        <TableColumn fx:id="colMatchStatut" text="Statut" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                
+                <!-- Actions -->
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="Modifier" styleClass="btn-secondary" 
+                            onAction="#handleModifierMatch"/>
+                    <Button text="Supprimer" styleClass="btn-danger" 
+                            onAction="#handleSupprimerMatch"/>
+                </HBox>
+                
+            </VBox>
+            
+            <!-- ===== GESTION DES UTILISATEURS ===== -->
+            <VBox fx:id="utilisateursPane" spacing="15" styleClass="content-pane" 
+                  visible="false" managed="false">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <Label text="Gestion des Utilisateurs" styleClass="page-title"/>
+                
+                <!-- Recherche -->
+                <HBox spacing="15" styleClass="filter-bar">
+                    <TextField fx:id="txtSearchUser" promptText="🔍 Rechercher un utilisateur..." 
+                               styleClass="search-field" prefWidth="300"
+                               onAction="#handleRechercherUser"/>
+                    <Button text="Rechercher" styleClass="btn-secondary" 
+                            onAction="#handleRechercherUser"/>
+                </HBox>
+                
+                <!-- Tableau -->
+                <TableView fx:id="tableUtilisateurs" VBox.vgrow="ALWAYS" styleClass="table-custom">
+                    <columns>
+                        <TableColumn fx:id="colUserId" text="ID" prefWidth="60"/>
+                        <TableColumn fx:id="colUserNom" text="Nom complet" prefWidth="180"/>
+                        <TableColumn fx:id="colUserEmail" text="Email" prefWidth="200"/>
+                        <TableColumn fx:id="colUserTelephone" text="Téléphone" prefWidth="130"/>
+                        <TableColumn fx:id="colUserNbTickets" text="Tickets" prefWidth="80"/>
+                        <TableColumn fx:id="colUserActif" text="Actif" prefWidth="80"/>
+                    </columns>
+                </TableView>
+                
+                <!-- Actions -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="💡 Double-cliquez sur un utilisateur pour voir ses tickets" 
+                           style="-fx-text-fill: #718096; -fx-font-style: italic;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="🎫 Voir tickets" styleClass="btn-primary" 
+                            onAction="#handleVoirTicketsUser"/>
+                    <Button text="🚫 Désactiver" styleClass="btn-danger" 
+                            onAction="#handleDesactiverUser"/>
+                </HBox>
+                
+            </VBox>
+            
+            <!-- ===== GESTION DES TICKETS ===== -->
+            <VBox fx:id="ticketsPane" spacing="15" styleClass="content-pane" 
+                  visible="false" managed="false">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <Label text="Gestion des Tickets" styleClass="page-title"/>
+                
+                <!-- Filtres -->
+                <HBox spacing="15" styleClass="filter-bar">
+                    <ComboBox fx:id="cmbFilterStatut" promptText="Statut" prefWidth="150"/>
+                    <Button text="Filtrer" styleClass="btn-secondary"/>
+                    <Button text="Réinitialiser" styleClass="btn-outline"/>
+                </HBox>
+                
+                <!-- Tableau -->
+                <TableView fx:id="tableTickets" VBox.vgrow="ALWAYS" styleClass="table-custom">
+                    <columns>
+                        <TableColumn fx:id="colTicketId" text="ID" prefWidth="60"/>
+                        <TableColumn fx:id="colTicketCode" text="Code QR" prefWidth="150"/>
+                        <TableColumn fx:id="colTicketMatch" text="Match" prefWidth="180"/>
+                        <TableColumn fx:id="colTicketSpectateur" text="Spectateur" prefWidth="150"/>
+                        <TableColumn fx:id="colTicketCategorie" text="Catégorie" prefWidth="100"/>
+                        <TableColumn fx:id="colTicketStatut" text="Statut" prefWidth="100"/>
+                        <TableColumn fx:id="colTicketPrix" text="Prix" prefWidth="80"/>
+                    </columns>
+                </TableView>
+                
+            </VBox>
+            
+            <!-- ===== GESTION DES ALERTES ===== -->
+            <VBox fx:id="alertesPane" spacing="15" styleClass="content-pane" 
+                  visible="false" managed="false">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <Label text="Gestion des Alertes" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblAlertesNonResolues" text="" styleClass="alert-badge"/>
+                    <Label fx:id="lblAlertesUtilisateurs" text="" styleClass="alert-badge-user"/>
+                </HBox>
+                
+                <!-- Onglets pour différents types d'alertes -->
+                <HBox spacing="10" styleClass="tab-bar">
+                    <Button fx:id="btnTabToutesAlertes" text="Toutes les alertes" 
+                            styleClass="tab-btn, active" onAction="#showToutesAlertes"/>
+                    <Button fx:id="btnTabAlertesUtilisateurs" text="🔔 Alertes Utilisateurs" 
+                            styleClass="tab-btn" onAction="#showAlertesUtilisateurs"/>
+                </HBox>
+                
+                <!-- Tableau -->
+                <TableView fx:id="tableAlertes" VBox.vgrow="ALWAYS" styleClass="table-custom">
+                    <columns>
+                        <TableColumn fx:id="colAlerteId" text="ID" prefWidth="60"/>
+                        <TableColumn fx:id="colAlerteTitre" text="Titre" prefWidth="200"/>
+                        <TableColumn fx:id="colAlerteType" text="Type" prefWidth="120"/>
+                        <TableColumn fx:id="colAlerteNiveau" text="Niveau" prefWidth="100"/>
+                        <TableColumn fx:id="colAlerteDate" text="Date" prefWidth="150"/>
+                        <TableColumn fx:id="colAlerteSource" text="Source" prefWidth="150"/>
+                        <TableColumn fx:id="colAlerteResolue" text="Statut" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                
+                <!-- Panneau de détail alerte utilisateur -->
+                <VBox fx:id="detailAlerteUtilisateurPane" spacing="10" styleClass="detail-panel" 
+                      visible="false" managed="false">
+                    <HBox spacing="20">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Message de l'utilisateur:" styleClass="field-label"/>
+                            <Label fx:id="lblMessageUtilisateur" wrapText="true" styleClass="detail-text"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Informations:" styleClass="field-label"/>
+                            <Label fx:id="lblInfosUtilisateur" wrapText="true" styleClass="detail-text"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                
+                <!-- Actions -->
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="👁️ Marquer comme lue" styleClass="btn-info" 
+                            onAction="#handleMarquerLue"/>
+                    <Button text="💬 Répondre" styleClass="btn-primary" 
+                            onAction="#handleRepondreAlerte"/>
+                    <Button text="✅ Résoudre" styleClass="btn-success" 
+                            onAction="#handleResoudreAlerte"/>
+                </HBox>
+                
+            </VBox>
+            
+            <!-- ===== RAPPORTS ===== -->
+            <VBox fx:id="rapportsPane" spacing="15" styleClass="content-pane" 
+                  visible="false" managed="false">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <Label text="Génération de Rapports" styleClass="page-title"/>
+                
+                <!-- Formulaire de génération -->
+                <HBox spacing="15" styleClass="filter-bar" alignment="CENTER_LEFT">
+                    <VBox spacing="5">
+                        <Label text="Type de rapport"/>
+                        <ComboBox fx:id="cmbTypeRapport" promptText="Sélectionner..." prefWidth="200"/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Date début"/>
+                        <DatePicker fx:id="dpDateDebut" prefWidth="150"/>
+                    </VBox>
+                    <VBox spacing="5">
+                        <Label text="Date fin"/>
+                        <DatePicker fx:id="dpDateFin" prefWidth="150"/>
+                    </VBox>
+                    <Button text="Générer" styleClass="btn-primary" 
+                            onAction="#handleGenererRapport"/>
+                </HBox>
+                
+                <!-- Tableau des rapports -->
+                <TableView fx:id="tableRapports" VBox.vgrow="ALWAYS" styleClass="table-custom">
+                    <columns>
+                        <TableColumn fx:id="colRapportId" text="ID" prefWidth="60"/>
+                        <TableColumn fx:id="colRapportTitre" text="Titre" prefWidth="300"/>
+                        <TableColumn fx:id="colRapportType" text="Type" prefWidth="150"/>
+                        <TableColumn fx:id="colRapportDate" text="Date génération" prefWidth="150"/>
+                    </columns>
+                </TableView>
+                
+                <!-- Actions -->
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="Exporter PDF" styleClass="btn-secondary" 
+                            onAction="#handleExporterRapport"/>
+                </HBox>
+                
+            </VBox>
+            
+            <!-- ===== FLUX SPECTATEURS ===== -->
+            <VBox fx:id="fluxPane" spacing="15" styleClass="content-pane" 
+                  visible="false" managed="false">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                
+                <Label text="Suivi des Flux Spectateurs" styleClass="page-title"/>
+                
+                <!-- Indicateur global -->
+                <HBox spacing="20" alignment="CENTER_LEFT">
+                    <VBox styleClass="flux-indicator" HBox.hgrow="ALWAYS">
+                        <Label text="Occupation globale"/>
+                        <ProgressBar fx:id="progressOccupation" progress="0.0" maxWidth="Infinity"/>
+                        <Label fx:id="lblOccupationGlobale" text="0%"/>
+                    </VBox>
+                </HBox>
+                
+                <!-- Tableau des flux -->
+                <TableView fx:id="tableFlux" VBox.vgrow="ALWAYS" styleClass="table-custom">
+                    <columns>
+                        <TableColumn fx:id="colFluxMatch" text="Match" prefWidth="200"/>
+                        <TableColumn fx:id="colFluxZone" text="Zone" prefWidth="150"/>
+                        <TableColumn fx:id="colFluxEntrees" text="Entrées" prefWidth="100"/>
+                        <TableColumn fx:id="colFluxSorties" text="Sorties" prefWidth="100"/>
+                        <TableColumn fx:id="colFluxDensite" text="Densité" prefWidth="100"/>
+                    </columns>
+                </TableView>
+                
+            </VBox>
+            
+        </StackPane>
+    </center>
+    
+</BorderPane>
