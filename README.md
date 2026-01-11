@@ -215,14 +215,9 @@ Modifier `application.properties` pour :
 - Paramètres des tickets
 - Chemins d'export des rapports
 
-## 📄 Licence
 
-Projet académique - Mondial 2030
 
-## 👥 Auteurs
 
-Mondial 2030 Development Team
 
 ---
 
-⚽ **Mondial 2030** - Maroc, Espagne, Portugal
