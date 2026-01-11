@@ -204,5 +204,3 @@ target/classes/
 4. **Chemins** : Toujours utiliser des chemins absolus depuis la racine (`/fxml/...`)
 
 ---
-
-*Document généré le 11 janvier 2026*
