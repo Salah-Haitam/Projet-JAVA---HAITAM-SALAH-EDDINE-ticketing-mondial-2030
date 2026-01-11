@@ -167,30 +167,303 @@ L'application suit une **architecture en couches** (Layer Architecture) :
 
 ## 📊 Diagramme de Classes Simplifié
 
-```
-                    ┌──────────────┐
-                    │  Utilisateur │ (abstract)
-                    └──────┬───────┘
-                           │
-           ┌───────────────┼───────────────┐
-           │                               │
-    ┌──────▼──────┐                ┌───────▼───────┐
-    │Administrateur│                │  Spectateur   │
-    └─────────────┘                └───────┬───────┘
-                                           │
-                                    ┌──────▼──────┐
-                                    │   Ticket    │
-                                    └──────┬──────┘
-                                           │
-                    ┌──────────────────────┼──────────────────────┐
-                    │                      │                      │
-             ┌──────▼──────┐        ┌──────▼──────┐        ┌──────▼──────┐
-             │    Match    │        │    Zone     │        │ Transaction │
-             └──────┬──────┘        └──────┬──────┘        └─────────────┘
-                    │                      │
-             ┌──────▼──────┐        ┌──────▼──────┐
-             │   Equipe    │        │    Siege    │
-             └─────────────┘        └─────────────┘
+```mermaid
+                    classDiagram
+    %% ===== HÉRITAGE UTILISATEUR =====
+    Utilisateur <|-- Administrateur
+    Utilisateur <|-- Spectateur
+
+    %% ===== RELATIONS PRINCIPALES =====
+    Spectateur "1" --> "*" Ticket : possède
+    Spectateur "1" --> "*" Transaction : effectue
+    Administrateur "1" --> "*" Rapport : génère
+
+    Match "1" --> "*" Ticket : contient
+    Match "1" --> "*" Zone : possède
+    Match "1" --> "*" FluxSpectateurs : surveille
+    Match "*" --> "1" Equipe : equipeDomicile
+    Match "*" --> "1" Equipe : equipeExterieur
+
+    Zone "1" --> "*" Siege : contient
+    Zone "1" --> "*" FluxSpectateurs : mesure
+
+    Ticket "1" --> "1" Siege : attribué
+    Ticket "*" --> "1" Transaction : lié
+
+    Alerte "*" --> "1" Match : concerne
+    Alerte "*" --> "1" Zone : localisée
+    Alerte "*" --> "1" Administrateur : resoluePar
+    Alerte "*" --> "1" Spectateur : creeePar
+
+    Rapport "*" --> "1" Match : concerne
+
+    %% ===== CLASSE UTILISATEUR (ABSTRAITE) =====
+    class Utilisateur {
+        <<abstract>>
+        -Long id
+        -String nom
+        -String prenom
+        -String email
+        -String motDePasse
+        -String telephone
+        -LocalDateTime dateInscription
+        -Boolean actif
+        -LocalDateTime derniereConnexion
+        +getNomComplet() String
+    }
+
+    %% ===== CLASSE ADMINISTRATEUR =====
+    class Administrateur {
+        -Integer niveauAcces
+        -String departement
+        -Boolean peutGererUtilisateurs
+        -Boolean peutGererMatchs
+        -Boolean peutGenererRapports
+        -Boolean peutVoirAlertes
+        -List~Rapport~ rapportsGeneres
+    }
+
+    %% ===== CLASSE SPECTATEUR =====
+    class Spectateur {
+        -String nationalite
+        -String numeroPasseport
+        -String dateNaissance
+        -String adresse
+        -String ville
+        -String pays
+        -String codePostal
+        -Integer nombreTicketsAchetes
+        -List~Ticket~ tickets
+        -List~Transaction~ transactions
+    }
+
+    %% ===== CLASSE MATCH =====
+    class Match {
+        -Long id
+        -String numeroMatch
+        -Equipe equipeDomicile
+        -Equipe equipeExterieur
+        -LocalDateTime dateHeure
+        -String stade
+        -String ville
+        -String pays
+        -PhaseMatch phase
+        -String groupe
+        -Integer scoreDomicile
+        -Integer scoreExterieur
+        -Boolean termine
+        -Integer capaciteStade
+        -Integer ticketsDisponibles
+        -Double prixBase
+        -List~Ticket~ tickets
+        -List~Zone~ zones
+    }
+
+    %% ===== CLASSE EQUIPE =====
+    class Equipe {
+        -Long id
+        -String nom
+        -String codePays
+        -String groupe
+        -String confederation
+        -Integer classementFifa
+        -String entraineur
+        -String drapeauUrl
+        -Integer points
+        -Integer matchsJoues
+        -Integer victoires
+        -Integer nuls
+        -Integer defaites
+        -Integer butsMarques
+        -Integer butsEncaisses
+    }
+
+    %% ===== CLASSE TICKET =====
+    class Ticket {
+        -Long id
+        -String numeroTicket
+        -String codeQR
+        -Match match
+        -Spectateur proprietaire
+        -Siege siege
+        -CategorieTicket categorie
+        -StatutTicket statut
+        -Double prix
+        -LocalDateTime dateAchat
+        -LocalDateTime dateValidation
+        -Boolean transferable
+        -Integer nombreTransferts
+        -String porteEntree
+    }
+
+    %% ===== CLASSE ZONE =====
+    class Zone {
+        -Long id
+        -String nom
+        -TypeZone typeZone
+        -Integer capacite
+        -Integer placesDisponibles
+        -Double coefficientPrix
+        -Integer niveau
+        -Boolean accessiblePmr
+        -String description
+        -Match match
+        -List~Siege~ sieges
+    }
+
+    %% ===== CLASSE SIEGE =====
+    class Siege {
+        -Long id
+        -String numeroSiege
+        -String rangee
+        -Integer numeroDansRangee
+        -Boolean disponible
+        -String typeSiege
+        -Boolean accessiblePmr
+        -Double positionX
+        -Double positionY
+        -Zone zone
+        -Ticket ticket
+    }
+
+    %% ===== CLASSE TRANSACTION =====
+    class Transaction {
+        -Long id
+        -String numeroTransaction
+        -Spectateur spectateur
+        -Ticket ticket
+        -TypeTransaction typeTransaction
+        -StatutTransaction statut
+        -Double montant
+        -String devise
+        -String methodePaiement
+        -String referencePaiement
+        -LocalDateTime dateCreation
+        -LocalDateTime dateValidation
+        -String description
+        -Spectateur spectateurSource
+        -Spectateur spectateurDestination
+    }
+
+    %% ===== CLASSE ALERTE =====
+    class Alerte {
+        -Long id
+        -String titre
+        -String message
+        -TypeAlerte typeAlerte
+        -NiveauAlerte niveau
+        -LocalDateTime dateCreation
+        -LocalDateTime dateResolution
+        -Boolean resolue
+        -String source
+        -Match match
+        -Zone zone
+        -Administrateur resoluePar
+        -Spectateur creeePar
+        -String reponseAdmin
+    }
+
+    %% ===== CLASSE RAPPORT =====
+    class Rapport {
+        -Long id
+        -String titre
+        -String typeRapport
+        -LocalDateTime dateGeneration
+        -LocalDateTime dateDebutPeriode
+        -LocalDateTime dateFinPeriode
+        -String contenu
+        -String cheminFichier
+        -String format
+        -Administrateur generePar
+        -Match match
+        -Integer totalTicketsVendus
+        -Double totalRevenus
+        -Double tauxRemplissage
+    }
+
+    %% ===== CLASSE FLUX SPECTATEURS =====
+    class FluxSpectateurs {
+        -Long id
+        -Match match
+        -Zone zone
+        -LocalDateTime horodatage
+        -Integer nombreEntrees
+        -Integer nombreSorties
+        -Integer occupationActuelle
+        -Integer capaciteMax
+        -Double densite
+        -Double vitesseFlux
+        -Integer tempsAttenteMoyen
+        -String porteEntree
+        -String porteSortie
+    }
+
+    %% ===== ÉNUMÉRATIONS =====
+    class CategorieTicket {
+        <<enumeration>>
+        STANDARD
+        PREMIUM
+        VIP
+    }
+
+    class StatutTicket {
+        <<enumeration>>
+        RESERVE
+        PAYE
+        VALIDE
+        ANNULE
+        EXPIRE
+    }
+
+    class TypeTransaction {
+        <<enumeration>>
+        ACHAT
+        TRANSFERT
+        REMBOURSEMENT
+    }
+
+    class StatutTransaction {
+        <<enumeration>>
+        EN_ATTENTE
+        VALIDEE
+        REFUSEE
+        ANNULEE
+    }
+
+    class PhaseMatch {
+        <<enumeration>>
+        PHASE_GROUPES
+        HUITIEMES
+        QUARTS
+        DEMI_FINALES
+        PETITE_FINALE
+        FINALE
+    }
+
+    class TypeZone {
+        <<enumeration>>
+        TRIBUNE_NORD
+        TRIBUNE_SUD
+        TRIBUNE_EST
+        TRIBUNE_OUEST
+        VIP
+        PRESSE
+    }
+
+    class TypeAlerte {
+        <<enumeration>>
+        SURPOPULATION
+        FRAUDE
+        SECURITE
+        TECHNIQUE
+    }
+
+    class NiveauAlerte {
+        <<enumeration>>
+        INFO
+        WARNING
+        CRITIQUE
+    }
 ```
 
 ---
