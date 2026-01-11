@@ -1,5 +1,22 @@
 # ⚙️ Projet et Fichiers de Configuration - Ticketing Mondial 2030
 
+
+## � Table des Matières
+
+- [Configuration Maven (pom.xml)](#-configuration-maven-pomxml)
+  - [Informations du Projet](#informations-du-projet)
+  - [Propriétés](#propriétés)
+  - [Dépendances](#dépendances)
+  - [Plugins Maven](#plugins-maven)
+- [Configuration Hibernate (hibernate.cfg.xml)](#️-configuration-hibernate-aborneabornatecfgxml)
+- [Configuration Application (application.properties)](#-configuration-application-applicationproperties)
+- [Configuration Logging (logback.xml)](#-configuration-logging-logbackxml)
+- [Commandes Maven](#-commandes-maven)
+- [Structure des Fichiers Générés](#-structure-des-fichiers-générés)
+- [Configuration pour Production](#-configuration-pour-production)
+- [Récapitulatif des Technologies](#-récapitulatif-des-technologies)
+
+---
 ## 📦 Configuration Maven (pom.xml)
 
 ### Informations du Projet
