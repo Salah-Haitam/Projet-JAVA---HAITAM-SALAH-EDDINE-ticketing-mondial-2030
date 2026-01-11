@@ -5,6 +5,8 @@
 > **Chemin** : `E:\javaprojet\ticketing-mondial-2030`
 
 ---
+## Réaliser par : HAITAM SALAH-EDDINE
+---
 
 ## 📋 Table des Matières
 
@@ -1095,4 +1097,5 @@ Ce projet **Mondial 2030 Ticketing Platform** est un excellent exemple d'applica
 
 > **Rapport généré le** : 11 Janvier 2026  
 > **Projet** : 4IIR EMSI - Java Avancé 2025-2026
+
 
