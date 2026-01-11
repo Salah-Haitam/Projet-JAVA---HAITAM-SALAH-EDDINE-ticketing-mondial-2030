@@ -1,5 +1,20 @@
 # 📁 Ressources - Ticketing Mondial 2030
 
+
+## � Table des Matières
+
+- [Structure des Ressources](#-structure-des-ressources)
+- [Fichiers FXML (Vues JavaFX)](#-fichiers-fxml-vues-javafx)
+- [Feuille de Styles CSS](#-feuille-de-styles-css)
+- [Images](#️-images)
+- [Comptes de Test](#-comptes-de-test)
+- [Chargement des Ressources dans le Code](#-chargement-des-ressources-dans-le-code)
+- [Hot-Reload CSS (Développement)](#-hot-reload-css-développement)
+- [Ressources Compilées](#-ressources-compilées-targetclasses)
+- [Bonnes Pratiques Ressources](#-bonnes-pratiques-ressources)
+
+---
+
 ## 📂 Structure des Ressources
 
 ```
