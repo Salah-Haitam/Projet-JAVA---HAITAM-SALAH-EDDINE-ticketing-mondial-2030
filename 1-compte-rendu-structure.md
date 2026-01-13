@@ -3,7 +3,7 @@
 ## Réaliser par : HAITAM SALAH-EDDINE
 ---
 <br>
-<img src="moi.jpg" style="height:200px;margin-right:600px"/>
+<img src="moi.jfif" style="height:200px;margin-right:600px"/>
 <br>
 
 ## 📑 Table des Matières
