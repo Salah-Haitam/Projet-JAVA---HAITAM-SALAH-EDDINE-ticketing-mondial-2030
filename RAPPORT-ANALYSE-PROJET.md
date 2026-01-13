@@ -6,6 +6,8 @@
 
 ---
 ## Réaliser par : HAITAM SALAH-EDDINE
+<br>
+<img src="moi.jfif" style="height:200px;margin-right:600px"/>
 ---
 
 ## 📋 Table des Matières
@@ -1097,5 +1099,6 @@ Ce projet **Mondial 2030 Ticketing Platform** est un excellent exemple d'applica
 
 > **Rapport généré le** : 11 Janvier 2026  
 > **Projet** : 4IIR EMSI - Java Avancé 2025-2026
+
 
 
